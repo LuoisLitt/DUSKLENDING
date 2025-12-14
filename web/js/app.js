@@ -14,11 +14,27 @@ window.addEventListener('load', async () => {
 
 // Check if MetaMask is installed
 async function checkMetaMask() {
+    console.log('=== Wallet Detection ===');
+    console.log('window.ethereum exists:', typeof window.ethereum !== 'undefined');
+
     if (typeof window.ethereum !== 'undefined') {
-        console.log('MetaMask is installed!');
+        console.log('Ethereum provider detected!');
+        console.log('Provider details:', {
+            isMetaMask: window.ethereum.isMetaMask,
+            chainId: window.ethereum.chainId,
+            selectedAddress: window.ethereum.selectedAddress
+        });
+
+        if (window.ethereum.isMetaMask) {
+            console.log('✅ MetaMask is installed and ready!');
+        } else {
+            console.log('⚠️ Non-MetaMask wallet detected');
+        }
     } else {
+        console.log('❌ No Ethereum provider found');
         showStatus('Please install MetaMask to use this app', 'error');
     }
+    console.log('=======================');
 }
 
 // Setup event listeners
@@ -31,6 +47,7 @@ async function connectWallet() {
     try {
         console.log('Connect Wallet button clicked!');
         console.log('window.ethereum exists:', typeof window.ethereum !== 'undefined');
+        console.log('window.ethereum object:', window.ethereum);
 
         if (typeof window.ethereum === 'undefined') {
             alert('MetaMask is not installed!\n\nPlease install MetaMask from https://metamask.io/download/');
@@ -38,11 +55,32 @@ async function connectWallet() {
             return;
         }
 
+        // Check if MetaMask is the provider
+        if (window.ethereum.isMetaMask) {
+            console.log('MetaMask detected!');
+        } else {
+            console.log('Warning: ethereum provider exists but might not be MetaMask');
+        }
+
         console.log('Requesting accounts...');
         showStatus('Opening MetaMask... Please check your browser extension popup', 'info');
 
-        // Request account access
-        const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+        // Request account access with better error handling
+        let accounts;
+        try {
+            accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+        } catch (requestError) {
+            console.error('Error requesting accounts:', requestError);
+            if (requestError.code === 4001) {
+                showStatus('Connection rejected by user', 'error');
+            } else if (requestError.code === -32002) {
+                showStatus('Please check MetaMask - a connection request is already pending', 'error');
+            } else {
+                showStatus('Error connecting to MetaMask: ' + requestError.message, 'error');
+            }
+            return;
+        }
+
         console.log('Accounts received:', accounts);
         userAddress = accounts[0];
 
