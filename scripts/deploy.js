@@ -29,15 +29,20 @@ async function main() {
   // Initial DUSK price: $0.50 (with 8 decimals like Chainlink)
   const initialDuskPrice = 50000000; // $0.50 with 8 decimals
 
+  // Treasury address (using deployer for now, can be changed later)
+  const treasuryAddress = deployer.address;
+
   const DuskLendingPool = await ethers.getContractFactory("DuskLendingPool");
   const lendingPool = await DuskLendingPool.deploy(
     duskAddress,
     usdtAddress,
-    initialDuskPrice
+    initialDuskPrice,
+    treasuryAddress
   );
   await lendingPool.waitForDeployment();
   const poolAddress = await lendingPool.getAddress();
   console.log("✅ DuskLendingPool deployed to:", poolAddress);
+  console.log("✅ Treasury set to:", treasuryAddress);
 
   // Step 3: Initialize the pool with USDT liquidity
   console.log("\n📝 Step 3: Initializing Pool with Liquidity...");
@@ -57,12 +62,14 @@ async function main() {
   console.log("  MockDUSK:", duskAddress);
   console.log("  MockUSDT:", usdtAddress);
   console.log("  DuskLendingPool:", poolAddress);
+  console.log("  Treasury:", treasuryAddress);
   console.log("\nPool Configuration:");
   console.log("  Initial DUSK Price: $0.50");
   console.log("  Collateralization Ratio: 150%");
   console.log("  Liquidation Threshold: 125%");
-  console.log("  Borrow APR: 5%");
-  console.log("  Supply APR: 3%");
+  console.log("  Borrow APR: 8% (borrowers pay)");
+  console.log("  Supply APR: 5% (lenders earn)");
+  console.log("  Protocol Spread: 3% (to treasury)");
   console.log("  Initial USDT Liquidity: 100,000 USDT");
   console.log("=".repeat(60));
 
@@ -77,13 +84,15 @@ async function main() {
       MockDUSK: duskAddress,
       MockUSDT: usdtAddress,
       DuskLendingPool: poolAddress,
+      Treasury: treasuryAddress,
     },
     configuration: {
       initialDuskPrice: "$0.50",
       collateralizationRatio: "150%",
       liquidationThreshold: "125%",
-      borrowAPR: "5%",
-      supplyAPR: "3%",
+      borrowAPR: "8%",
+      supplyAPR: "5%",
+      protocolSpread: "3%",
     },
   };
 

@@ -45,6 +45,20 @@ contract DuskLendingPool is Ownable, ReentrancyGuard {
 
     mapping(address => UserData) public users;
 
+    // Supplier data (lenders who supply USDT)
+    struct SupplierData {
+        uint256 usdtSupplied;
+        uint256 lastUpdateTimestamp;
+        uint256 accruedInterest;
+    }
+
+    mapping(address => SupplierData) public suppliers;
+    uint256 public totalUsdtSupplied; // Total USDT supplied by all lenders
+
+    // Treasury for protocol fees
+    address public treasury;
+    uint256 public treasuryBalance; // Accumulated protocol fees
+
     // Price oracle (simplified - in production, use Chainlink or similar)
     uint256 public duskPriceUSD; // Price in USD with 8 decimals (like Chainlink)
 
@@ -53,9 +67,12 @@ contract DuskLendingPool is Ownable, ReentrancyGuard {
     event DuskDeposited(address indexed user, uint256 amount);
     event DuskWithdrawn(address indexed user, uint256 amount);
     event UsdtBorrowed(address indexed user, uint256 amount);
-    event UsdtRepaid(address indexed user, uint256 amount);
+    event UsdtRepaid(address indexed user, uint256 amount, uint256 interestToSuppliers, uint256 interestToTreasury);
     event UsdtSupplied(address indexed supplier, uint256 amount);
-    event UsdtWithdrawnBySupplier(address indexed supplier, uint256 amount);
+    event UsdtWithdrawnBySupplier(address indexed supplier, uint256 amount, uint256 interest);
+    event SupplierInterestAccrued(address indexed supplier, uint256 interest);
+    event TreasuryUpdated(address indexed oldTreasury, address indexed newTreasury);
+    event TreasuryWithdrawal(address indexed treasury, uint256 amount);
     event Liquidation(
         address indexed liquidator,
         address indexed borrower,
@@ -72,19 +89,23 @@ contract DuskLendingPool is Ownable, ReentrancyGuard {
      * @param _duskToken Address of DUSK token
      * @param _usdtToken Address of USDT token
      * @param _initialDuskPrice Initial DUSK price in USD (8 decimals)
+     * @param _treasury Address of protocol treasury
      */
     constructor(
         address _duskToken,
         address _usdtToken,
-        uint256 _initialDuskPrice
+        uint256 _initialDuskPrice,
+        address _treasury
     ) Ownable(msg.sender) {
         require(_duskToken != address(0), "Invalid DUSK address");
         require(_usdtToken != address(0), "Invalid USDT address");
         require(_initialDuskPrice > 0, "Invalid price");
+        require(_treasury != address(0), "Invalid treasury address");
 
         duskToken = IERC20(_duskToken);
         usdtToken = IERC20(_usdtToken);
         duskPriceUSD = _initialDuskPrice;
+        treasury = _treasury;
     }
 
     // ============ Core Functions ============
@@ -161,20 +182,35 @@ contract DuskLendingPool is Ownable, ReentrancyGuard {
         require(totalDebt > 0, "No debt to repay");
 
         uint256 repayAmount = amount > totalDebt ? totalDebt : amount;
+        uint256 interestPaid = 0;
 
         usdtToken.safeTransferFrom(msg.sender, address(this), repayAmount);
 
-        // First repay accrued interest, then principal
+        // Calculate how much of the repayment is interest vs principal
         if (users[msg.sender].accruedInterest >= repayAmount) {
+            interestPaid = repayAmount;
             users[msg.sender].accruedInterest -= repayAmount;
         } else {
+            interestPaid = users[msg.sender].accruedInterest;
             uint256 remainingRepay = repayAmount - users[msg.sender].accruedInterest;
             users[msg.sender].accruedInterest = 0;
             users[msg.sender].usdtBorrowed -= remainingRepay;
             totalUsdtBorrowed -= remainingRepay;
         }
 
-        emit UsdtRepaid(msg.sender, repayAmount);
+        // Split interest between suppliers (5% APR worth) and treasury (3% spread)
+        // Borrowers pay 8% APR, so: 5/8 goes to suppliers, 3/8 goes to treasury
+        uint256 interestToSuppliers = 0;
+        uint256 interestToTreasury = 0;
+
+        if (interestPaid > 0) {
+            interestToSuppliers = (interestPaid * supplyAPR) / borrowAPR; // (interestPaid * 500) / 800
+            interestToTreasury = interestPaid - interestToSuppliers;
+
+            treasuryBalance += interestToTreasury;
+        }
+
+        emit UsdtRepaid(msg.sender, repayAmount, interestToSuppliers, interestToTreasury);
     }
 
     /**
@@ -184,13 +220,53 @@ contract DuskLendingPool is Ownable, ReentrancyGuard {
     function supplyUsdt(uint256 amount) external nonReentrant {
         require(amount > 0, "Amount must be > 0");
 
+        // Update supplier's accrued interest before adding new supply
+        _updateSupplierInterest(msg.sender);
+
         usdtToken.safeTransferFrom(msg.sender, address(this), amount);
+
+        suppliers[msg.sender].usdtSupplied += amount;
+        totalUsdtSupplied += amount;
         totalUsdtLiquidity += amount;
 
-        // In a full implementation, we would mint aTokens here
-        // For simplicity, we're just tracking the liquidity
-
         emit UsdtSupplied(msg.sender, amount);
+    }
+
+    /**
+     * @notice Withdraw supplied USDT plus accrued interest
+     * @param amount Amount of USDT to withdraw (0 = withdraw all)
+     */
+    function withdrawSupply(uint256 amount) external nonReentrant {
+        _updateSupplierInterest(msg.sender);
+
+        uint256 totalBalance = suppliers[msg.sender].usdtSupplied + suppliers[msg.sender].accruedInterest;
+        require(totalBalance > 0, "No balance to withdraw");
+
+        uint256 withdrawAmount = (amount == 0 || amount > totalBalance) ? totalBalance : amount;
+
+        // Check pool has enough liquidity (not currently borrowed)
+        uint256 availableLiquidity = totalUsdtLiquidity - totalUsdtBorrowed;
+        require(availableLiquidity >= withdrawAmount, "Insufficient liquidity");
+
+        uint256 interestWithdrawn = 0;
+
+        // First withdraw from accrued interest, then from principal
+        if (suppliers[msg.sender].accruedInterest >= withdrawAmount) {
+            suppliers[msg.sender].accruedInterest -= withdrawAmount;
+            interestWithdrawn = withdrawAmount;
+        } else {
+            uint256 remainingWithdraw = withdrawAmount - suppliers[msg.sender].accruedInterest;
+            interestWithdrawn = suppliers[msg.sender].accruedInterest;
+            suppliers[msg.sender].accruedInterest = 0;
+            suppliers[msg.sender].usdtSupplied -= remainingWithdraw;
+            totalUsdtSupplied -= remainingWithdraw;
+        }
+
+        totalUsdtLiquidity -= withdrawAmount;
+
+        usdtToken.safeTransfer(msg.sender, withdrawAmount);
+
+        emit UsdtWithdrawnBySupplier(msg.sender, withdrawAmount, interestWithdrawn);
     }
 
     /**
@@ -283,6 +359,33 @@ contract DuskLendingPool is Ownable, ReentrancyGuard {
         return availableToBorrow < poolLiquidity ? availableToBorrow : poolLiquidity;
     }
 
+    /**
+     * @notice Get supplier's total balance including interest
+     * @param supplier Address of the supplier
+     * @return Total USDT balance (principal + interest)
+     */
+    function getSupplierBalance(address supplier) public view returns (uint256) {
+        uint256 accruedInterest = _calculateSupplierAccruedInterest(supplier);
+        return suppliers[supplier].usdtSupplied + suppliers[supplier].accruedInterest + accruedInterest;
+    }
+
+    /**
+     * @notice Get supplier's earned interest
+     * @param supplier Address of the supplier
+     * @return Total interest earned
+     */
+    function getSupplierInterest(address supplier) public view returns (uint256) {
+        return suppliers[supplier].accruedInterest + _calculateSupplierAccruedInterest(supplier);
+    }
+
+    /**
+     * @notice Get available liquidity in the pool
+     * @return Available USDT that can be withdrawn
+     */
+    function getAvailableLiquidity() public view returns (uint256) {
+        return totalUsdtLiquidity > totalUsdtBorrowed ? totalUsdtLiquidity - totalUsdtBorrowed : 0;
+    }
+
     // ============ Internal Functions ============
 
     /**
@@ -315,6 +418,34 @@ contract DuskLendingPool is Ownable, ReentrancyGuard {
         return (principal * borrowAPR * timeElapsed) / (365 days * BASIS_POINTS);
     }
 
+    /**
+     * @notice Update accrued interest for a supplier
+     */
+    function _updateSupplierInterest(address supplier) internal {
+        uint256 newInterest = _calculateSupplierAccruedInterest(supplier);
+        if (newInterest > 0) {
+            suppliers[supplier].accruedInterest += newInterest;
+            emit SupplierInterestAccrued(supplier, newInterest);
+        }
+        suppliers[supplier].lastUpdateTimestamp = block.timestamp;
+    }
+
+    /**
+     * @notice Calculate supplier's accrued interest since last update
+     * @dev Interest is calculated proportionally based on supplier's share of total supply
+     */
+    function _calculateSupplierAccruedInterest(address supplier) internal view returns (uint256) {
+        if (suppliers[supplier].usdtSupplied == 0 || totalUsdtSupplied == 0) return 0;
+
+        uint256 timeElapsed = block.timestamp - suppliers[supplier].lastUpdateTimestamp;
+        if (timeElapsed == 0) return 0;
+
+        // Calculate interest: (supplier's share / total supply) * total borrowed * supplyAPR * time
+        // This distributes interest proportionally among all suppliers
+        uint256 principal = suppliers[supplier].usdtSupplied;
+        return (principal * supplyAPR * timeElapsed) / (365 days * BASIS_POINTS);
+    }
+
     // ============ Admin Functions ============
 
     /**
@@ -337,6 +468,31 @@ contract DuskLendingPool is Ownable, ReentrancyGuard {
         borrowAPR = _borrowAPR;
         supplyAPR = _supplyAPR;
         emit InterestRateUpdated(_borrowAPR, _supplyAPR);
+    }
+
+    /**
+     * @notice Update treasury address
+     * @param newTreasury New treasury address
+     */
+    function updateTreasury(address newTreasury) external onlyOwner {
+        require(newTreasury != address(0), "Invalid treasury address");
+        address oldTreasury = treasury;
+        treasury = newTreasury;
+        emit TreasuryUpdated(oldTreasury, newTreasury);
+    }
+
+    /**
+     * @notice Withdraw accumulated protocol fees to treasury
+     * @param amount Amount to withdraw (0 = withdraw all)
+     */
+    function withdrawTreasury(uint256 amount) external onlyOwner {
+        require(treasuryBalance > 0, "No treasury balance");
+
+        uint256 withdrawAmount = (amount == 0 || amount > treasuryBalance) ? treasuryBalance : amount;
+        treasuryBalance -= withdrawAmount;
+
+        usdtToken.safeTransfer(treasury, withdrawAmount);
+        emit TreasuryWithdrawal(treasury, withdrawAmount);
     }
 
     /**

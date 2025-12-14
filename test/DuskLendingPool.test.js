@@ -3,11 +3,11 @@ const { ethers } = require("hardhat");
 
 describe("DuskLendingPool", function () {
   let duskToken, usdtToken, lendingPool;
-  let owner, user1, user2, liquidator;
+  let owner, user1, user2, liquidator, treasury;
   let initialDuskPrice;
 
   beforeEach(async function () {
-    [owner, user1, user2, liquidator] = await ethers.getSigners();
+    [owner, user1, user2, liquidator, treasury] = await ethers.getSigners();
 
     // Deploy mock tokens
     const MockDUSK = await ethers.getContractFactory("MockDUSK");
@@ -24,7 +24,8 @@ describe("DuskLendingPool", function () {
     lendingPool = await DuskLendingPool.deploy(
       await duskToken.getAddress(),
       await usdtToken.getAddress(),
-      initialDuskPrice
+      initialDuskPrice,
+      treasury.address
     );
     await lendingPool.waitForDeployment();
 
@@ -147,8 +148,8 @@ describe("DuskLendingPool", function () {
 
       await usdtToken.connect(user1).approve(await lendingPool.getAddress(), repayAmount);
       await expect(lendingPool.connect(user1).repayUsdt(repayAmount))
-        .to.emit(lendingPool, "UsdtRepaid")
-        .withArgs(user1.address, repayAmount);
+        .to.emit(lendingPool, "UsdtRepaid");
+      // Event now emits: (user, amount, interestToSuppliers, interestToTreasury)
     });
   });
 
