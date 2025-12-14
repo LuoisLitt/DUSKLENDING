@@ -1,0 +1,35 @@
+{
+  "name": "dusk-lending-platform",
+  "version": "1.0.0",
+  "description": "A lending platform for DUSK network based on AAVE v3 protocol - Deposit DUSK and borrow USDT",
+  "main": "index.js",
+  "scripts": {
+    "compile": "hardhat compile",
+    "test": "hardhat test",
+    "deploy:testnet": "hardhat run scripts/deploy.js --network dusk-testnet",
+    "deploy:mainnet": "hardhat run scripts/deploy.js --network dusk-mainnet",
+    "node": "hardhat node"
+  },
+  "keywords": [
+    "dusk",
+    "lending",
+    "defi",
+    "aave",
+    "blockchain"
+  ],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox": "^4.0.0",
+    "hardhat": "^2.19.0",
+    "@openzeppelin/contracts": "^5.0.0",
+    "@nomiclabs/hardhat-ethers": "^2.2.3",
+    "ethers": "^6.9.0",
+    "dotenv": "^16.3.1",
+    "chai": "^4.3.10",
+    "@nomicfoundation/hardhat-chai-matchers": "^2.0.0"
+  },
+  "dependencies": {
+    "@aave/core-v3": "^1.19.3"
+  }
+}
