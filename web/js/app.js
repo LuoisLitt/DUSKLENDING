@@ -68,17 +68,36 @@ async function connectWallet() {
         // Request account access with better error handling
         let accounts;
         try {
-            accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+            // First, try to check if already connected
+            accounts = await window.ethereum.request({ method: 'eth_accounts' });
+
+            // If no accounts, request access
+            if (!accounts || accounts.length === 0) {
+                console.log('No accounts found, requesting access...');
+                accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+            } else {
+                console.log('Already connected accounts found:', accounts);
+            }
         } catch (requestError) {
             console.error('Error requesting accounts:', requestError);
-            if (requestError.code === 4001) {
-                showStatus('Connection rejected by user', 'error');
-            } else if (requestError.code === -32002) {
-                showStatus('Please check MetaMask - a connection request is already pending', 'error');
-            } else {
-                showStatus('Error connecting to MetaMask: ' + requestError.message, 'error');
+
+            // Try fallback method using ethereum.enable() (deprecated but sometimes works)
+            try {
+                console.log('Trying fallback connection method...');
+                accounts = await window.ethereum.enable();
+                console.log('Fallback method succeeded!');
+            } catch (fallbackError) {
+                console.error('Fallback also failed:', fallbackError);
+
+                if (requestError.code === 4001) {
+                    showStatus('Connection rejected by user', 'error');
+                } else if (requestError.code === -32002) {
+                    showStatus('Connection request already pending. Please check MetaMask popup and approve/reject it first.', 'error');
+                } else {
+                    showStatus('MetaMask error. Try: 1) Refresh page 2) Lock/unlock MetaMask 3) Restart browser', 'error');
+                }
+                return;
             }
-            return;
         }
 
         console.log('Accounts received:', accounts);
