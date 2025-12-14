@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DUSK Lending Platform</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header>
+            <h1>🌙 DUSK Lending Platform</h1>
+            <p class="subtitle">Deposit DUSK • Borrow USDT • Earn Interest</p>
+        </header>
+
+        <!-- Network Status -->
+        <div class="network-status" id="networkStatus">
+            <div class="status-item">
+                <span class="label">Network:</span>
+                <span id="networkName">Not Connected</span>
+            </div>
+            <div class="status-item">
+                <span class="label">Chain ID:</span>
+                <span id="chainId">-</span>
+            </div>
+        </div>
+
+        <!-- Wallet Connection -->
+        <div class="wallet-section">
+            <button id="connectWallet" class="btn btn-primary">Connect Wallet</button>
+            <div id="walletInfo" class="wallet-info hidden">
+                <p><strong>Address:</strong> <span id="walletAddress"></span></p>
+                <p><strong>DUSK Balance:</strong> <span id="duskBalance">0</span> DUSK</p>
+                <p><strong>USDT Balance:</strong> <span id="usdtBalance">0</span> USDT</p>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Pool Statistics -->
+            <div class="card">
+                <h2>📊 Pool Statistics</h2>
+                <div class="stats-grid">
+                    <div class="stat">
+                        <div class="stat-label">DUSK Price</div>
+                        <div class="stat-value" id="duskPrice">$0.50</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-label">Total USDT Liquidity</div>
+                        <div class="stat-value" id="totalLiquidity">-</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-label">Available to Borrow</div>
+                        <div class="stat-value" id="availableBorrow">-</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-label">Borrow APR</div>
+                        <div class="stat-value">5%</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Your Position -->
+            <div class="card">
+                <h2>💰 Your Position</h2>
+                <div class="position-grid">
+                    <div class="position-item">
+                        <div class="position-label">DUSK Collateral</div>
+                        <div class="position-value" id="userCollateral">0 DUSK</div>
+                    </div>
+                    <div class="position-item">
+                        <div class="position-label">USDT Borrowed</div>
+                        <div class="position-value" id="userDebt">0 USDT</div>
+                    </div>
+                    <div class="position-item">
+                        <div class="position-label">Health Factor</div>
+                        <div class="position-value" id="healthFactor">∞</div>
+                    </div>
+                    <div class="position-item">
+                        <div class="position-label">Max Borrow</div>
+                        <div class="position-value" id="maxBorrow">0 USDT</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Actions -->
+            <div class="actions-grid">
+                <!-- Faucet -->
+                <div class="card action-card">
+                    <h3>💧 Get Test Tokens</h3>
+                    <p class="card-description">Get free DUSK and USDT for testing</p>
+                    <button class="btn btn-secondary" onclick="getFaucetTokens()">Get Tokens</button>
+                </div>
+
+                <!-- Deposit -->
+                <div class="card action-card">
+                    <h3>📥 Deposit DUSK</h3>
+                    <p class="card-description">Deposit DUSK as collateral</p>
+                    <input type="number" id="depositAmount" placeholder="Amount" class="input">
+                    <button class="btn btn-primary" onclick="depositDusk()">Deposit</button>
+                </div>
+
+                <!-- Borrow -->
+                <div class="card action-card">
+                    <h3>💸 Borrow USDT</h3>
+                    <p class="card-description">Borrow USDT against collateral</p>
+                    <input type="number" id="borrowAmount" placeholder="Amount" class="input">
+                    <button class="btn btn-primary" onclick="borrowUsdt()">Borrow</button>
+                </div>
+
+                <!-- Repay -->
+                <div class="card action-card">
+                    <h3>💰 Repay USDT</h3>
+                    <p class="card-description">Repay your USDT loan</p>
+                    <input type="number" id="repayAmount" placeholder="Amount" class="input">
+                    <button class="btn btn-primary" onclick="repayUsdt()">Repay</button>
+                </div>
+
+                <!-- Withdraw -->
+                <div class="card action-card">
+                    <h3>📤 Withdraw DUSK</h3>
+                    <p class="card-description">Withdraw DUSK collateral</p>
+                    <input type="number" id="withdrawAmount" placeholder="Amount" class="input">
+                    <button class="btn btn-primary" onclick="withdrawDusk()">Withdraw</button>
+                </div>
+
+                <!-- Supply USDT -->
+                <div class="card action-card">
+                    <h3>🏦 Supply USDT</h3>
+                    <p class="card-description">Supply USDT to earn interest</p>
+                    <input type="number" id="supplyAmount" placeholder="Amount" class="input">
+                    <button class="btn btn-secondary" onclick="supplyUsdt()">Supply</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Status Messages -->
+        <div id="statusMessage" class="status-message hidden"></div>
+
+        <!-- Footer -->
+        <footer>
+            <p>DUSK Lending Platform • Based on AAVE v3 • Built for DuskEVM</p>
+            <p class="warning">⚠️ Testnet Only - Do Not Use Real Assets</p>
+        </footer>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.ethers.io/lib/ethers-5.7.2.umd.min.js"></script>
+    <script src="js/config.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
