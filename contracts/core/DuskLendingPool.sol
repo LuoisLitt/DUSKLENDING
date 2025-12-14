@@ -27,8 +27,8 @@ contract DuskLendingPool is Ownable, ReentrancyGuard {
     uint256 public constant BASIS_POINTS = 10000;
 
     // Interest rates (annual percentage rate in basis points)
-    uint256 public borrowAPR = 500; // 5% APR (borrower rate)
-    uint256 public supplyAPR = 800; // 8% APR (lender rate)
+    uint256 public borrowAPR = 800; // 8% APR (borrower rate)
+    uint256 public supplyAPR = 500; // 5% APR (lender rate)
 
     // Pool reserves
     uint256 public totalDuskDeposited;
@@ -333,7 +333,7 @@ contract DuskLendingPool is Ownable, ReentrancyGuard {
      * @param _supplyAPR New supply APR in basis points
      */
     function updateInterestRates(uint256 _borrowAPR, uint256 _supplyAPR) external onlyOwner {
-        // Note: Allowing supplyAPR > borrowAPR for subsidized lending
+        require(_borrowAPR > _supplyAPR, "Borrow rate must be > supply rate");
         borrowAPR = _borrowAPR;
         supplyAPR = _supplyAPR;
         emit InterestRateUpdated(_borrowAPR, _supplyAPR);
