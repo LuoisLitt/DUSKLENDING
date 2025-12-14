@@ -17,15 +17,15 @@ module.exports = {
       chainId: 31337,
     },
     "dusk-testnet": {
-      url: process.env.DUSK_TESTNET_RPC_URL || "https://rpc.dusk.network/testnet",
+      url: process.env.DUSK_TESTNET_RPC_URL || "https://nodes.testnet.dusk.network",
       accounts: process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
-      chainId: 476, // Dusk testnet chain ID (placeholder - verify actual chain ID)
+      chainId: 2, // Nocturne Testnet Chain ID
       gasPrice: "auto",
     },
     "dusk-mainnet": {
-      url: process.env.DUSK_MAINNET_RPC_URL || "https://rpc.dusk.network",
+      url: process.env.DUSK_MAINNET_RPC_URL || "https://nodes.dusk.network",
       accounts: process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
-      chainId: 477, // Dusk mainnet chain ID (placeholder - verify actual chain ID)
+      chainId: 1, // Dusk Mainnet Chain ID
       gasPrice: "auto",
     },
   },
