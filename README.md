@@ -14,7 +14,7 @@ This lending platform allows users to:
 
 - **Overcollateralized Lending**: 150% collateralization ratio ensures platform solvency
 - **Liquidation Protection**: 125% liquidation threshold protects both borrowers and lenders
-- **Interest-Bearing**: Competitive APRs for both borrowers (5%) and suppliers (3%)
+- **Interest-Bearing**: Competitive APRs for both borrowers (8%) and suppliers (5%)
 - **Based on AAVE v3**: Built on battle-tested DeFi architecture
 - **DuskEVM Compatible**: Deployed on DUSK Network's EVM-compatible layer
 
@@ -43,8 +43,8 @@ This lending platform allows users to:
 | Collateralization Ratio | 150% | Minimum collateral required to borrow |
 | Liquidation Threshold | 125% | Health factor below which positions can be liquidated |
 | Liquidation Bonus | 5% | Reward for liquidators |
-| Borrow APR | 5% | Annual percentage rate for borrowing |
-| Supply APR | 3% | Annual percentage rate for supplying liquidity |
+| Borrow APR | 8% | Annual percentage rate for borrowing |
+| Supply APR | 5% | Annual percentage rate for supplying liquidity |
 
 ## Getting Started
 
