@@ -45,9 +45,7 @@ function setupEventListeners() {
 // Connect wallet
 async function connectWallet() {
     try {
-        console.log('Connect Wallet button clicked!');
-        console.log('window.ethereum exists:', typeof window.ethereum !== 'undefined');
-        console.log('window.ethereum object:', window.ethereum);
+        console.log('=== Starting Wallet Connection ===');
 
         if (typeof window.ethereum === 'undefined') {
             alert('MetaMask is not installed!\n\nPlease install MetaMask from https://metamask.io/download/');
@@ -55,52 +53,34 @@ async function connectWallet() {
             return;
         }
 
-        // Check if MetaMask is the provider
-        if (window.ethereum.isMetaMask) {
-            console.log('MetaMask detected!');
-        } else {
-            console.log('Warning: ethereum provider exists but might not be MetaMask');
-        }
+        console.log('MetaMask detected:', window.ethereum.isMetaMask);
+        showStatus('Connecting to MetaMask...', 'info');
 
-        console.log('Requesting accounts...');
-        showStatus('Opening MetaMask... Please check your browser extension popup', 'info');
-
-        // Request account access with better error handling
+        // Simple, direct request - no fallbacks or complex logic
         let accounts;
         try {
-            // First, try to check if already connected
-            accounts = await window.ethereum.request({ method: 'eth_accounts' });
+            accounts = await window.ethereum.request({
+                method: 'eth_requestAccounts'
+            });
+        } catch (error) {
+            console.error('Connection error:', error);
 
-            // If no accounts, request access
-            if (!accounts || accounts.length === 0) {
-                console.log('No accounts found, requesting access...');
-                accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+            if (error.code === 4001) {
+                showStatus('You rejected the connection request', 'error');
+            } else if (error.code === -32002) {
+                showStatus('Connection request already pending! Please open MetaMask and approve/reject the pending request.', 'error');
             } else {
-                console.log('Already connected accounts found:', accounts);
+                showStatus('Connection failed. Try these steps:\n1. Click the MetaMask icon\n2. Click "Not connected" → "Connect"\n3. Select this site and click "Next" → "Connect"\n4. Then try again', 'error');
             }
-        } catch (requestError) {
-            console.error('Error requesting accounts:', requestError);
-
-            // Try fallback method using ethereum.enable() (deprecated but sometimes works)
-            try {
-                console.log('Trying fallback connection method...');
-                accounts = await window.ethereum.enable();
-                console.log('Fallback method succeeded!');
-            } catch (fallbackError) {
-                console.error('Fallback also failed:', fallbackError);
-
-                if (requestError.code === 4001) {
-                    showStatus('Connection rejected by user', 'error');
-                } else if (requestError.code === -32002) {
-                    showStatus('Connection request already pending. Please check MetaMask popup and approve/reject it first.', 'error');
-                } else {
-                    showStatus('MetaMask error. Try: 1) Refresh page 2) Lock/unlock MetaMask 3) Restart browser', 'error');
-                }
-                return;
-            }
+            return;
         }
 
-        console.log('Accounts received:', accounts);
+        if (!accounts || accounts.length === 0) {
+            showStatus('No accounts found. Please unlock MetaMask.', 'error');
+            return;
+        }
+
+        console.log('Connected account:', accounts[0]);
         userAddress = accounts[0];
 
         // Setup provider and signer
@@ -128,9 +108,11 @@ async function connectWallet() {
         window.ethereum.on('accountsChanged', handleAccountsChanged);
         window.ethereum.on('chainChanged', handleChainChanged);
 
+        console.log('=== Connection Complete ===');
+
     } catch (error) {
-        console.error('Error connecting wallet:', error);
-        showStatus('Error connecting wallet: ' + error.message, 'error');
+        console.error('Unexpected error:', error);
+        showStatus('Error: ' + error.message, 'error');
     }
 }
 
