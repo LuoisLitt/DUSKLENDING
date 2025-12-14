@@ -29,13 +29,21 @@ function setupEventListeners() {
 // Connect wallet
 async function connectWallet() {
     try {
+        console.log('Connect Wallet button clicked!');
+        console.log('window.ethereum exists:', typeof window.ethereum !== 'undefined');
+
         if (typeof window.ethereum === 'undefined') {
-            showStatus('Please install MetaMask', 'error');
+            alert('MetaMask is not installed!\n\nPlease install MetaMask from https://metamask.io/download/');
+            showStatus('Please install MetaMask browser extension', 'error');
             return;
         }
 
+        console.log('Requesting accounts...');
+        showStatus('Opening MetaMask... Please check your browser extension popup', 'info');
+
         // Request account access
         const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+        console.log('Accounts received:', accounts);
         userAddress = accounts[0];
 
         // Setup provider and signer
@@ -380,6 +388,43 @@ async function supplyUsdt() {
     } catch (error) {
         console.error('Error supplying:', error);
         showStatus('Error: ' + error.message, 'error');
+    }
+}
+
+// Add DuskEVM Testnet to MetaMask
+async function addDuskNetwork() {
+    try {
+        if (typeof window.ethereum === 'undefined') {
+            alert('Please install MetaMask first!');
+            return;
+        }
+
+        showStatus('Adding DuskEVM Testnet to MetaMask...', 'info');
+
+        await window.ethereum.request({
+            method: 'wallet_addEthereumChain',
+            params: [{
+                chainId: '0x2E9', // 745 in hex
+                chainName: 'DuskEVM Testnet',
+                nativeCurrency: {
+                    name: 'DUSK',
+                    symbol: 'DUSK',
+                    decimals: 18
+                },
+                rpcUrls: ['https://rpc.testnet.evm.dusk.network'],
+                blockExplorerUrls: null
+            }]
+        });
+
+        showStatus('DuskEVM Testnet added successfully!', 'success');
+
+    } catch (error) {
+        console.error('Error adding network:', error);
+        if (error.code === 4001) {
+            showStatus('Network addition rejected by user', 'error');
+        } else {
+            showStatus('Error adding network: ' + error.message, 'error');
+        }
     }
 }
 

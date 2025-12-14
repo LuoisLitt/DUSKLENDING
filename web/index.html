@@ -29,6 +29,7 @@
         <!-- Wallet Connection -->
         <div class="wallet-section">
             <button id="connectWallet" class="btn btn-primary">Connect Wallet</button>
+            <button onclick="addDuskNetwork()" class="btn btn-secondary" style="margin-left: 10px;">Add DuskEVM Network</button>
             <div id="walletInfo" class="wallet-info hidden">
                 <p><strong>Address:</strong> <span id="walletAddress"></span></p>
                 <p><strong>DUSK Balance:</strong> <span id="duskBalance">0</span> DUSK</p>
@@ -56,6 +57,10 @@
                     </div>
                     <div class="stat">
                         <div class="stat-label">Borrow APR</div>
+                        <div class="stat-value">8%</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-label">Supply APR</div>
                         <div class="stat-value">5%</div>
                     </div>
                 </div>
