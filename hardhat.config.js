@@ -17,9 +17,9 @@ module.exports = {
       chainId: 31337,
     },
     "dusk-testnet": {
-      url: process.env.DUSK_TESTNET_RPC_URL || "https://nodes.testnet.dusk.network",
+      url: process.env.DUSK_TESTNET_RPC_URL || "https://rpc.testnet.evm.dusk.network",
       accounts: process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
-      chainId: 2, // Nocturne Testnet Chain ID
+      chainId: 745, // DuskEVM Testnet Chain ID
       gasPrice: "auto",
     },
     "dusk-mainnet": {

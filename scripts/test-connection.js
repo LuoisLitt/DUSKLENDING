@@ -5,10 +5,14 @@ async function main() {
   console.log("🔍 Testing DUSK Testnet Connection...\n");
 
   try {
-    // Get provider
-    const provider = new ethers.JsonRpcProvider("https://nodes.testnet.dusk.network");
+    // Get the network config
+    const networkConfig = hre.config.networks["dusk-testnet"];
+    const rpcUrl = networkConfig.url;
 
-    console.log("📡 RPC Endpoint: https://nodes.testnet.dusk.network");
+    // Get provider
+    const provider = new ethers.JsonRpcProvider(rpcUrl);
+
+    console.log("📡 RPC Endpoint:", rpcUrl);
 
     // Try to get network info
     console.log("📝 Fetching network information...");
