@@ -1,0 +1,42 @@
+========================================
+CRON SETUP GUIDE - COPY THIS LINE
+========================================
+
+1. Run this command:
+   crontab -e
+
+2. If asked to choose an editor, select nano (usually option 1)
+
+3. Scroll to the bottom of the file
+
+4. Copy and paste this EXACT line:
+
+0 7 * * * /home/user/DUSKLENDING/dusk-twitter-bot/run_bot.sh
+
+5. Save and exit:
+   - Press Ctrl+O (to save)
+   - Press Enter (confirm filename)
+   - Press Ctrl+X (to exit)
+
+6. Verify it worked:
+   crontab -l
+
+========================================
+WHAT THIS DOES
+========================================
+
+0 7 * * * = Every day at 7:00 AM UTC
+/home/user/DUSKLENDING/dusk-twitter-bot/run_bot.sh = Runs the bot
+
+========================================
+AFTER SETUP
+========================================
+
+The bot will automatically run every day at 7:00 AM UTC
+
+View logs after it runs:
+cd /home/user/DUSKLENDING/dusk-twitter-bot
+ls -lh bot_logs/
+
+View latest log:
+tail -f bot_logs/run_*.log
