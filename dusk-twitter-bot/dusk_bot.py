@@ -28,11 +28,11 @@ BEARER_TOKEN = os.getenv("TWITTER_BEARER_TOKEN")
 DAILY_FOLLOW_LIMIT = int(os.getenv("DAILY_FOLLOW_LIMIT", "50"))
 ANALYTICS_FILE = os.getenv("ANALYTICS_FILE", "dusk_twitter_analytics.json")
 
-# ============== REAL DUSK CONTENT ==============
+# ============== REAL DUSK CONTENT (Updated 2025) ==============
 DUSK_FACTS = [
-    "Dusk mainnet is LIVE - the first privacy-preserving blockchain for regulated finance",
+    "Dusk mainnet launched January 7, 2025 - the first privacy-preserving blockchain for regulated finance",
     "Hyperstaking on Dusk allows smart contracts to implement custom staking logic - like Account Abstraction for staking",
-    "Zedger protocol focuses on privacy-preserving compliant asset tokenization and management",
+    "Zedger enables privacy-preserving asset issuance, clearance, and settlement - fully operational in 2025",
     "NPEX has tokenized $300M+ in assets on Dusk - real world financial products on-chain",
     "Citadel is Dusk's ZK-powered KYC/AML tool that reconciles privacy with regulatory compliance",
     "Dusk uses PlonK proof system and Poseidon hash - the most advanced ZK cryptography available",
@@ -42,7 +42,12 @@ DUSK_FACTS = [
     "Transactions on Dusk are private but auditable - institutions get confidentiality AND compliance",
     "Dusk is MiCA-ready and integrating with custodian banks for institutional regulated finance",
     "Privacy within a shared state - what no other blockchain has achieved",
+    "DuskPay is launching - a privacy-first payment platform partnering with stablecoin issuers",
+    "Lightspeed L2 brings EVM compatibility while settling on Dusk's privacy-preserving Layer 1",
+    "Dusk partnered with 21X as a trade participant - bringing institutional regulated trading on-chain",
     "One-block sync to network, no state bloat, web wallet with ZKP computations in-browser",
+    "DuskEVM combines Ethereum tools with privacy features for seamless institutional onboarding",
+    "Zero-knowledge proofs on Dusk maintain privacy during cross-chain transfers",
 ]
 
 DUSK_TECH_DETAILS = [
@@ -55,6 +60,9 @@ DUSK_TECH_DETAILS = [
     "Zedger Asset protocol for compliant tokenization and issuance",
     "privacy-preserving smart contracts that institutions actually want",
     "Dusk VM optimized for ZK proofs and high-throughput privacy transactions",
+    "DuskEVM - combining EVM compatibility with native privacy features",
+    "Lightspeed L2 for Ethereum interoperability with Dusk settlement",
+    "DuskPay integration for privacy-first stablecoin payments",
 ]
 
 INSTITUTIONAL_PROBLEMS = [
@@ -63,6 +71,8 @@ INSTITUTIONAL_PROBLEMS = [
     "Traditional blockchains expose all transaction data - deal-breaker for real finance",
     "KYC/AML creates friction while blockchain transparency violates GDPR",
     "MEV and front-running make public chains unsuitable for institutional trading",
+    "Compliance requirements like MiCA and DORA make most blockchains unusable for regulated finance",
+    "TradFi institutions need privacy for competitive deals but regulators need transparency",
 ]
 
 DUSK_ADVANTAGES = [
@@ -72,57 +82,88 @@ DUSK_ADVANTAGES = [
     "$300M+ in real assets already tokenized on mainnet via NPEX",
     "Full on-chain issuance, clearance & settlement - the complete solution",
     "Privacy without sacrificing the unified liquidity of public blockchains",
+    "21X partnership brings regulated institutional trading to DeFi",
+    "DuskEVM allows Ethereum devs to build privacy-preserving dApps instantly",
+    "Native stablecoin support through DuskPay for seamless payments",
 ]
 
-# ============== ENHANCED TWEET TEMPLATES ==============
+# ============== VIRAL PARAPHRASE TEMPLATES ==============
+PARAPHRASE_STYLES = [
+    "{fact}\n\nThis is what the future of finance looks like. 🔮 #DeFi #RWA #DUSK",
+    "GM to everyone building the future of regulated DeFi 🌅\n\n{fact}\n\n#Blockchain #Privacy",
+    "Imagine: {advantage}\n\nYou don't have to imagine. It's live on @DuskFoundation.\n\n#Web3 #Crypto",
+    "Thread on why {tech_detail} matters 🧵\n\nBut honestly? Just watch what @DuskFoundation is building.\n\n$DUSK",
+    "The market doesn't understand {fact} yet.\n\nThey will. #Crypto #RWA",
+    "Quick reminder: {fact}\n\nMainnet is live. Institutions are building. The future is now. 🚀",
+    "Everyone: 'When RWA adoption?'\n\n{fact}\n\nIt's already happening. #DuskNetwork #TradFi",
+    "Can't stop thinking about {fact}\n\nThis changes everything for institutional adoption. 💡",
+    "Hot take that's not really hot: {advantage}\n\n@DuskFoundation proved it. #Blockchain",
+]
+
+# ============== ENHANCED TWEET TEMPLATES (Optimized for Reach) ==============
 TWEET_TEMPLATES = {
     "hot_takes": [
-        "Unpopular opinion: {statement}\n\nMost RWA projects will fail because of this. #DUSK #RWA",
-        "Everyone is building 'RWA chains' but missing the obvious: {problem}\n\n@DuskFoundation gets it.",
-        "Hot take: Transparent blockchains for securities = DOA\n\n{fact}\n\nThis is why $DUSK is different.",
-        "While everyone talks about tokenization, {fact}\n\nThis changes everything. #RWA",
-        "Controversial but true: 90% of RWA projects can't handle real institutional capital.\n\nWhy? {problem}",
+        "Unpopular opinion: {statement}\n\nMost RWA projects will fail because of this. #DUSK #RWA #Crypto",
+        "Everyone is building 'RWA chains' but missing the obvious: {problem}\n\n@DuskFoundation gets it. #DeFi",
+        "Hot take: Transparent blockchains for securities = DOA\n\n{fact}\n\nThis is why $DUSK is different. #Blockchain",
+        "While everyone talks about tokenization, {fact}\n\nThis changes everything. #RWA #Web3",
+        "Controversial but true: 90% of RWA projects can't handle real institutional capital.\n\nWhy? {problem} #TradFi",
+        "The elephant in the room: {problem}\n\nEvery RWA project ignores this. Except @DuskFoundation. #Crypto",
     ],
     "dusk_milestones": [
-        "🚨 MAINNET MILESTONE: {fact}\n\nThis is what real institutional blockchain looks like. $DUSK",
-        "Major @DuskFoundation update: {fact}\n\nThe infrastructure for regulated DeFi is here.",
-        "While other chains talk, Dusk delivers: {fact}\n\nReal adoption, real assets, real privacy.",
-        "Game-changing tech: {tech_detail}\n\nOnly possible on @DuskFoundation. #Privacy #Compliance",
-        "From zero to hero: {fact}\n\n2025 is Dusk's year. Don't say you weren't told. $DUSK",
+        "🚨 MAINNET MILESTONE: {fact}\n\nThis is what real institutional blockchain looks like. $DUSK #RWA",
+        "Major @DuskFoundation update: {fact}\n\nThe infrastructure for regulated DeFi is here. #Blockchain",
+        "While other chains talk, Dusk delivers: {fact}\n\nReal adoption, real assets, real privacy. #DeFi #Privacy",
+        "Game-changing tech: {tech_detail}\n\nOnly possible on @DuskFoundation. #Privacy #Compliance #Web3",
+        "From zero to hero: {fact}\n\n2025 is Dusk's year. Don't say you weren't told. $DUSK #Crypto",
+        "Just launched: {fact}\n\nTradFi meets DeFi. The future is here. 🚀 #DuskNetwork",
     ],
     "education_tech": [
-        "🧵 Let's talk about {tech_detail}\n\nThis is the unlock for institutional RWAs:",
-        "Privacy vs Compliance - the false dilemma.\n\n{fact}\n\nProblem solved. #DUSK",
-        "Why institutions need privacy: {problem}\n\nHow Dusk solves it: {advantage}",
-        "Tech breakdown: {tech_detail}\n\nThis is why $DUSK is built different from other L1s.",
-        "Real talk about RWA infrastructure: {fact}\n\nNot speculation. Real working tech.",
+        "Let's talk about {tech_detail}\n\nThis is the unlock for institutional RWAs. 🧵 #Crypto #Privacy",
+        "Privacy vs Compliance - the false dilemma.\n\n{fact}\n\nProblem solved. #DUSK #Blockchain",
+        "Why institutions need privacy: {problem}\n\nHow Dusk solves it: {advantage} #RWA #DeFi",
+        "Tech breakdown: {tech_detail}\n\nThis is why $DUSK is built different from other L1s. #Web3",
+        "Real talk about RWA infrastructure: {fact}\n\nNot speculation. Real working tech. #TradFi #Blockchain",
+        "Here's what makes {tech_detail} revolutionary:\n\nInstitutions finally have what they need. @DuskFoundation 💡",
     ],
     "engagement_bait": [
-        "Reply with 🔥 if you're bullish on privacy-preserving RWAs\n\nBonus: Why or why not? 👇",
-        "Quick poll:\n\nWhich matters more for institutional adoption?\n\n1️⃣ Privacy\n2️⃣ Speed\n3️⃣ Fees\n4️⃣ Compliance\n\nComment your take 👇",
-        "Finish this: 'The biggest barrier to RWA adoption is _____'\n\nBest answer gets retweeted. #DUSK",
-        "Question for the real ones:\n\nWill transparent blockchains ever work for institutional securities?\n\nLet's discuss 🧵",
-        "Tag someone who needs to understand why {fact} matters for the future of finance.",
-        "Hot or not: {statement}\n\nDefend your position 👇",
+        "Reply with 🔥 if you're bullish on privacy-preserving RWAs\n\nBonus: Why or why not? 👇 #DUSK #RWA",
+        "Quick poll:\n\nWhich matters more for institutional adoption?\n\n1️⃣ Privacy\n2️⃣ Speed\n3️⃣ Fees\n4️⃣ Compliance\n\nComment your take 👇 #DeFi",
+        "Finish this: 'The biggest barrier to RWA adoption is _____'\n\nBest answer gets retweeted. #DUSK #Crypto",
+        "Question for the real ones:\n\nWill transparent blockchains ever work for institutional securities?\n\nLet's discuss 🧵 #RWA",
+        "Tag someone who needs to understand why {fact} matters for the future of finance. #Blockchain",
+        "Hot or not: {statement}\n\nDefend your position 👇 #DeFi #Privacy",
+        "GM! ☀️\n\nWhat's your biggest question about privacy-preserving blockchain?\n\nDrop it below 👇 @DuskFoundation #Web3",
     ],
     "fomo_urgency": [
-        "RIGHT NOW: {fact}\n\nInstitutional DeFi is happening. Are you paying attention?",
-        "In 6 months everyone will wish they understood this today:\n\n{fact}\n\nYou're early. $DUSK",
-        "48 hours since mainnet launch and {fact}\n\nThe revolution won't be televised. #DUSK",
-        "While you were sleeping: {fact}\n\nThe infrastructure is being built. Real. World. Assets.",
-        "This week: {fact}\n\nNext week: More institutions onboarding.\n\nDon't miss what's happening. @DuskFoundation",
+        "RIGHT NOW: {fact}\n\nInstitutional DeFi is happening. Are you paying attention? 👀 #DUSK #RWA",
+        "In 6 months everyone will wish they understood this today:\n\n{fact}\n\nYou're early. $DUSK #Crypto",
+        "Since mainnet launch: {fact}\n\nThe revolution won't be televised. You're seeing it live. #DUSK #DeFi",
+        "While you were sleeping: {fact}\n\nThe infrastructure is being built. Real. World. Assets. 🏗️ #Blockchain",
+        "This week: {fact}\n\nNext week: More institutions onboarding.\n\nDon't miss what's happening. @DuskFoundation #RWA",
     ],
     "social_proof": [
-        "Major milestone: {fact}\n\n$300M in real assets. Real custodians. Real adoption. $DUSK",
-        "Not hype, not vaporware: {fact}\n\nThis is what actual institutional blockchain looks like.",
-        "Talked to 3 institutions this week. All asking about the same thing: {advantage}\n\nGuess what they're building on? 👀",
-        "When banks and exchanges choose privacy: {fact}\n\nActions speak louder than roadmaps.",
+        "Major milestone: {fact}\n\n$300M in real assets. Real custodians. Real adoption. $DUSK #RWA #TradFi",
+        "Not hype, not vaporware: {fact}\n\nThis is what actual institutional blockchain looks like. #DeFi",
+        "Talked to 3 institutions this week. All asking about the same thing: {advantage}\n\nGuess what they're building on? 👀 #DUSK",
+        "When banks and exchanges choose privacy: {fact}\n\nActions speak louder than roadmaps. #Blockchain #TradFi",
+        "Real numbers: {fact}\n\nThis is what mass adoption looks like. @DuskFoundation #Crypto #RWA",
     ],
     "problem_solution": [
-        "The problem: {problem}\n\nThe solution: {advantage}\n\nThe blockchain: @DuskFoundation\n\n#RWA #DUSK",
-        "Institutions said: '{problem}'\n\nDusk said: 'Hold my ZK proofs' ✅ {fact}",
-        "Everyone: {problem}\n\nDusk: {tech_detail}\n\nThis is how you build for real adoption.",
-        "Challenge: {problem}\n\nAnswer: {advantage}\n\nInfrastructure: $DUSK\n\nSimple as that.",
+        "The problem: {problem}\n\nThe solution: {advantage}\n\nThe blockchain: @DuskFoundation\n\n#RWA #DUSK #DeFi",
+        "Institutions said: '{problem}'\n\nDusk said: 'Hold my ZK proofs' ✅ {fact} #Blockchain #Privacy",
+        "Everyone: {problem}\n\nDusk: {tech_detail}\n\nThis is how you build for real adoption. #Web3 #TradFi",
+        "Challenge: {problem}\n\nAnswer: {advantage}\n\nInfrastructure: $DUSK\n\nSimple as that. #RWA #Crypto",
+    ],
+    "paraphrase": [
+        "{fact}\n\nThis is what the future of finance looks like. 🔮 #DeFi #RWA #DUSK",
+        "GM to everyone building the future of regulated DeFi 🌅\n\n{fact}\n\n#Blockchain #Privacy",
+        "Imagine: {advantage}\n\nYou don't have to imagine. It's live on @DuskFoundation. #Web3 #Crypto",
+        "The market doesn't understand {fact} yet.\n\nThey will. 📈 #Crypto #RWA",
+        "Quick reminder: {fact}\n\nMainnet is live. Institutions are building. The future is now. 🚀 #DUSK",
+        "Everyone: 'When RWA adoption?'\n\n{fact}\n\nIt's already happening. #DuskNetwork #TradFi",
+        "Can't stop thinking about {fact}\n\nThis changes everything for institutional adoption. 💡 #DeFi",
+        "Not a drill: {fact}\n\n@DuskFoundation is rewriting the rules. #Blockchain #Privacy",
     ],
 }
 
@@ -162,6 +203,19 @@ THREAD_STARTERS = [
             "5/ This is just the beginning\n\nCustodian bank integrations coming. More institutions building. The flywheel is starting to spin.",
             "6/ Why this matters for $DUSK holders:\n\nReal usage. Real value accrual. Real institutional adoption.\n\nNot promises. Actual on-chain activity with real financial assets.",
             "7/ The question isn't IF institutions will tokenize assets.\n\nIt's WHERE they'll do it.\n\nNPEX answered: Dusk.\n\nWho's next? 👀"
+        ]
+    },
+    {
+        "tweets": [
+            "🧵 Dusk 2025 Roadmap - What's shipping RIGHT NOW\n\nWhile others promise, Dusk delivers. Here's what's live & coming soon:",
+            "1/ Mainnet launched January 7, 2025 🎉\n\nAfter 6 years of development, the first privacy-preserving blockchain for regulated finance is LIVE.\n\nReal users. Real transactions. Real privacy. #DUSK",
+            "2/ DuskEVM - Ethereum compatibility meets privacy\n\nBuild with familiar EVM tools, deploy on a privacy-first L1. Ethereum devs can now build privacy-preserving dApps without learning new tech. #Web3",
+            "3/ Lightspeed L2 - Best of both worlds\n\nEVM-compatible Layer 2 with Dusk settlement. Get Ethereum's ecosystem + Dusk's privacy. Interoperability without compromise. #Blockchain",
+            "4/ DuskPay - Privacy-first payments\n\nIntegrated stablecoin payments for the entire ecosystem. Gaming, settlements, transactions - all private by default. Partnering with major stablecoin issuers. #Crypto",
+            "5/ 21X Partnership - Institutional trading on-chain\n\nDusk is onboarded as a trade participant. Regulated exchange bringing TradFi onto blockchain. This is what institutional adoption looks like. #TradFi",
+            "6/ Hyperstaking - Programmable staking\n\nLike Account Abstraction but for stakes. Custom logic, delegation, liquid staking, yield optimization. Revolutionary staking infrastructure. #DeFi",
+            "7/ Citadel & Zedger - Privacy meets compliance\n\nZK KYC/AML + privacy-preserving asset issuance. MiCA-ready, GDPR-friendly, institution-approved. The complete infrastructure package. #RWA",
+            "8/ What's next?\n\nCustodian bank integrations expanding. More institutions onboarding. EVM ecosystem growing.\n\nThe infrastructure for regulated DeFi is being built. Right now. @DuskFoundation 🚀"
         ]
     }
 ]
@@ -210,17 +264,19 @@ def save_analytics(data):
 
 # ============== TWEET GENERATION ==============
 def generate_tweet(category=None):
-    """Generate a tweet from templates and content pools"""
+    """Generate a tweet from templates and content pools (optimized for max reach)"""
     if category is None:
         categories = list(TWEET_TEMPLATES.keys())
+        # Optimized weights for maximum engagement and reach
         weights = {
-            "hot_takes": 0.20,
-            "engagement_bait": 0.20,
-            "dusk_milestones": 0.20,
-            "education_tech": 0.15,
-            "fomo_urgency": 0.10,
-            "social_proof": 0.08,
-            "problem_solution": 0.07,
+            "engagement_bait": 0.25,    # High engagement drives reach
+            "paraphrase": 0.20,         # Authentic, shareable content
+            "hot_takes": 0.18,          # Controversial = viral potential
+            "dusk_milestones": 0.15,    # News-worthy content
+            "education_tech": 0.10,     # Educational value
+            "fomo_urgency": 0.07,       # Urgency drives action
+            "social_proof": 0.03,       # Credibility
+            "problem_solution": 0.02,   # Value-add
         }
         category = random.choices(categories, weights=[weights.get(c, 0.01) for c in categories])[0]
 
@@ -234,7 +290,9 @@ def generate_tweet(category=None):
         statement=random.choice([
             "Privacy isn't optional for institutional RWAs",
             "Transparent blockchains can't handle real securities",
-            "Without ZK tech, institutional tokenization is dead on arrival"
+            "Without ZK tech, institutional tokenization is dead on arrival",
+            "MiCA compliance will separate the real projects from vaporware",
+            "TradFi needs DeFi privacy - not transparency"
         ])
     )
 
@@ -301,34 +359,51 @@ def engage_with_targets(client, limit=5):
 
     print("✓ Engagement complete\n")
 
-# ============== SCHEDULING ==============
-def create_schedule(num_posts=30):
-    """Create a posting schedule for the day"""
-    prime_hours = [8, 10, 12, 14, 16, 18, 20, 22]
+# ============== SCHEDULING (Optimized for Maximum Reach) ==============
+def create_schedule(num_posts=20):
+    """Create a posting schedule optimized for engagement and reach
+
+    Peak Twitter hours for crypto/tech audience (UTC):
+    - Morning: 7-9 AM (US waking up, EU afternoon)
+    - Lunch: 12-2 PM (Global lunch break)
+    - Evening: 6-9 PM (US peak, EU evening)
+    """
+    # Peak engagement times (hours in UTC)
+    peak_hours = [7, 8, 12, 13, 18, 19, 20]
+    good_hours = [9, 10, 14, 15, 16, 21, 22]
     schedule = []
 
-    # Reserve slots for threads
-    thread_times = [(10, 0, "thread"), (19, 30, "thread")]
+    # Thread times at peak engagement (morning and evening)
+    thread_times = [(8, 30, "thread"), (19, 0, "thread")]
     regular_needed = num_posts - 2
 
-    for hour in range(24):
-        if hour in prime_hours:
-            num_in_hour = min(2, regular_needed - len(schedule))
-        else:
-            num_in_hour = 1 if len(schedule) < regular_needed else 0
+    # Prioritize peak hours (3-4 posts)
+    for hour in peak_hours:
+        if len(schedule) >= regular_needed:
+            break
+        minute = random.choice([0, 15, 30, 45])  # Scheduled times for consistency
+        schedule.append((hour, minute, "regular"))
 
-        for _ in range(num_in_hour):
-            if len(schedule) >= regular_needed:
-                break
-            minute = random.randint(0, 59)
-            schedule.append((hour, minute, "regular"))
+    # Fill remaining slots in good hours
+    for hour in good_hours:
+        if len(schedule) >= regular_needed:
+            break
+        minute = random.choice([10, 25, 40, 55])
+        schedule.append((hour, minute, "regular"))
+
+    # Add any remaining posts distributed throughout the day
+    remaining_hours = [h for h in range(24) if h not in peak_hours + good_hours]
+    while len(schedule) < regular_needed:
+        hour = random.choice(remaining_hours)
+        minute = random.randint(0, 59)
+        schedule.append((hour, minute, "regular"))
 
     schedule.extend(thread_times)
     return sorted(schedule, key=lambda x: (x[0], x[1]))
 
 # ============== MAIN POSTING ==============
-def run_bot(client, num_posts=30):
-    """Main bot execution loop"""
+def run_bot(client, num_posts=20):
+    """Main bot execution loop (default: 20 posts/day for maximum reach)"""
     schedule = create_schedule(num_posts)
     analytics = load_analytics()
 
@@ -414,7 +489,7 @@ def main():
         print("\n✅ Twitter API connected")
         print("🚀 Starting automated posting...\n")
 
-        run_bot(client, num_posts=30)
+        run_bot(client, num_posts=20)
 
     except KeyboardInterrupt:
         print("\n\n⚠️  Bot stopped by user")
