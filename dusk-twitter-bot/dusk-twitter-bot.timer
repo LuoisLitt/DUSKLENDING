@@ -1,0 +1,14 @@
+[Unit]
+Description=Run Dusk Twitter Bot daily at 7 AM
+Requires=dusk-twitter-bot.service
+
+[Timer]
+# Run daily at 7:00 AM
+OnCalendar=*-*-* 07:00:00
+# Run immediately if missed (e.g., system was off)
+Persistent=true
+# Add 5 minute random delay to avoid exact timing patterns
+RandomizedDelaySec=300
+
+[Install]
+WantedBy=timers.target

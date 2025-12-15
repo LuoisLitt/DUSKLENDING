@@ -1,0 +1,14 @@
+[Unit]
+Description=Dusk Twitter Bot - Daily Posting Service
+After=network.target
+
+[Service]
+Type=oneshot
+User=%U
+WorkingDirectory=/home/user/DUSKLENDING/dusk-twitter-bot
+ExecStart=/home/user/DUSKLENDING/dusk-twitter-bot/run_bot.sh
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target

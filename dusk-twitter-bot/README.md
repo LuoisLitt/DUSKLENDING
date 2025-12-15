@@ -4,16 +4,19 @@ Automated Twitter bot for promoting Dusk Network with authentic content about pr
 
 ## Features
 
-- **Automated Posting**: Schedules 30+ tweets per day at optimal times
-- **Thread Support**: Posts educational thread series about Dusk technology
+- **Automated Posting**: 20 tweets per day scheduled at peak engagement times (7-9am, 12-2pm, 6-9pm UTC)
+- **Thread Support**: Posts educational thread series about Dusk technology (2 threads/day)
 - **Smart Engagement**: Likes and retweets content from relevant accounts
 - **Analytics Tracking**: Monitors posting statistics over time
-- **Content Variety**: Multiple tweet templates covering:
-  - Hot takes on RWA and privacy
-  - Educational content about ZK technology
-  - Dusk milestones and achievements
-  - Engagement-driving questions
-  - Problem/solution frameworks
+- **Daily Scheduling**: Can be configured to run automatically every day at 7 AM
+- **Content Variety**: Multiple tweet templates optimized for maximum reach:
+  - Engagement bait (polls, questions) - 25%
+  - Paraphrase style (authentic, shareable) - 20%
+  - Hot takes (viral potential) - 18%
+  - Milestones (newsworthy) - 15%
+  - Educational content about ZK technology - 10%
+  - FOMO/Urgency - 7%
+  - Social proof & problem/solution - 5%
 
 ## Prerequisites
 
@@ -82,9 +85,20 @@ Run the bot to post tweets throughout the day:
 python dusk_bot.py
 ```
 
-**Note:** The bot will wait for scheduled times before posting. It's designed to run for a full day cycle.
+**Note:** The bot posts 20 times throughout the day at optimal times for maximum reach.
 
-### Running in Background (Linux/Mac)
+### Automated Daily Scheduling (Recommended)
+
+For daily automated posting at 7 AM, see **[SCHEDULING.md](SCHEDULING.md)** for complete setup instructions.
+
+**Quick setup with cron:**
+```bash
+chmod +x run_bot.sh
+crontab -e
+# Add: 0 7 * * * /home/user/DUSKLENDING/dusk-twitter-bot/run_bot.sh
+```
+
+### Running in Background (Manual)
 
 Use `nohup` or `screen` to keep it running:
 

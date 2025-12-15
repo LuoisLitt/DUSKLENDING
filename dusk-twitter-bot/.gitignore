@@ -5,6 +5,9 @@
 *.json
 !package.json
 
+# Bot logs
+bot_logs/
+
 # Python
 __pycache__/
 *.py[cod]
