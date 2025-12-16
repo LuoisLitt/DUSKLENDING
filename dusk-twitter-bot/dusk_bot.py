@@ -87,6 +87,46 @@ DUSK_ADVANTAGES = [
     "Native stablecoin support through DuskPay for seamless payments",
 ]
 
+# ============== RWA MARKET FACTS (2025 News) ==============
+RWA_MARKET_FACTS = [
+    "RWA tokenization market hit $35.78B in November 2025 - private credit leads at $17B",
+    "BlackRock's BUIDL fund holds $2.9B in tokenized US Treasuries - 44% market share",
+    "RWA market projected to reach $16-30 trillion by 2030 according to BCG",
+    "Franklin Templeton's tokenized MMF now accepted as loan collateral by DBS Bank",
+    "JPMorgan and Franklin Templeton deploying capital into tokenized infrastructure in 2025",
+    "UBS, KKR, and major banks moved from pilots to production-level tokenization in 2025",
+    "Tokenized assets could unlock $230 trillion in collateral currently sitting idle",
+    "On-chain capital markets reaching $33B+ as institutions embrace blockchain settlement",
+    "Private credit tokenization is the fastest growing RWA category at ~$17 billion",
+    "Major institutions choosing privacy-preserving chains for tokenized securities",
+]
+
+STABLECOIN_FACTS = [
+    "Stablecoin market cap surpassed $300B in 2025 - up from $204B in early 2025",
+    "USDT and USDC account for 93% of stablecoin market - $145B and $60.2B respectively",
+    "Stablecoin transaction volume hit $4 trillion between January-July 2025",
+    "GENIUS Act passed July 2025 - first US federal stablecoin regulatory framework",
+    "MiCA regulation forcing EU exchanges to delist non-compliant stablecoins",
+    "Binance delisted USDT, DAI, TUSD in EU due to MiCA compliance requirements",
+    "All US stablecoin issuers now require federal licensing and 100% reserve backing",
+    "Stablecoin volumes up 83% year-over-year - highest ever annual transaction volume",
+    "Privacy-preserving stablecoins becoming essential for institutional DeFi",
+    "Stablecoins reaching mainstream adoption with $300B+ market cap in 2025",
+]
+
+TOKENIZATION_TRENDS = [
+    "Securities tokenization enabling 24/7 trading and instant settlement in 2025",
+    "Real estate tokenization unlocking fractional ownership for retail investors",
+    "Tokenized bonds reducing underwriting costs and improving time-to-market",
+    "World Economic Forum: tokenization transforming the entire future of finance",
+    "Europe's MiCA framework attracting tokenization projects with clear regulations",
+    "Tokenized government bonds gaining traction for on-chain trading ease",
+    "Major banks issuing digital-native bonds directly on blockchain platforms",
+    "Asset tokenization enabling fractionalization - making TradFi accessible to all",
+    "On-chain capital markets dissolving barriers between global financial systems",
+    "Regulatory clarity in 2025 accelerating institutional tokenization adoption",
+]
+
 # ============== VIRAL PARAPHRASE TEMPLATES ==============
 PARAPHRASE_STYLES = [
     "{fact}\n\nThis is what the future of finance looks like. 🔮 #DeFi #RWA #DUSK",
@@ -165,6 +205,29 @@ TWEET_TEMPLATES = {
         "Can't stop thinking about {fact}\n\nThis changes everything for institutional adoption. 💡 #DeFi",
         "Not a drill: {fact}\n\n@DuskFoundation is rewriting the rules. #Blockchain #Privacy",
     ],
+    "rwa_news": [
+        "🚨 RWA Market Update:\n\n{rwa_fact}\n\nBut here's what they're missing: {problem}\n\n@DuskFoundation solves this. #RWA #Tokenization",
+        "Breaking: {rwa_fact}\n\nNow imagine this with privacy + compliance.\n\nThat's what @DuskFoundation enables. #DeFi #RWA",
+        "The numbers don't lie:\n\n{rwa_fact}\n\nThe question: Which chains can handle this privately?\n\nAnswer: 👀 #DUSK #TradFi",
+        "Market insight: {rwa_fact}\n\nMost chains can't handle this level of institutional capital.\n\n@DuskFoundation was built for exactly this. #Blockchain #RWA",
+        "{rwa_fact}\n\nMeanwhile, privacy-preserving infrastructure is being built for this exact use case. #DUSK #Tokenization",
+        "Everyone's talking about: {rwa_fact}\n\nNobody's talking about the privacy problem.\n\nUntil now. @DuskFoundation #RWA #Privacy",
+    ],
+    "stablecoin_news": [
+        "Stablecoin milestone: {stablecoin_fact}\n\nThe next evolution? Privacy-preserving stablecoins.\n\nDuskPay is coming. 💰 #Stablecoins #DUSK",
+        "{stablecoin_fact}\n\nRegulation is here. Privacy is next.\n\n@DuskFoundation is ready. #MiCA #Stablecoins #Compliance",
+        "📊 {stablecoin_fact}\n\nNow add:\n✅ Privacy\n✅ Compliance\n✅ Institutional-grade security\n\n= DuskPay #Crypto #Stablecoins",
+        "Hot take: {stablecoin_fact}\n\nBut transparent stablecoins expose all your financial activity.\n\nPrivacy matters. @DuskFoundation #DeFi",
+        "{stablecoin_fact}\n\nCompliance ✅\nAdoption ✅\nPrivacy ❌\n\nDusk is solving the last piece of the puzzle. #Stablecoins #Privacy",
+    ],
+    "tokenization_news": [
+        "Tokenization update: {tokenization_fact}\n\nThis is massive. But it needs privacy to work at scale.\n\n@DuskFoundation 🔐 #Tokenization #RWA",
+        "{tokenization_fact}\n\nProblem: Most chains can't offer both privacy AND regulatory compliance.\n\nSolution: @DuskFoundation #DeFi #Tokenization",
+        "The future is here: {tokenization_fact}\n\nNext challenge: Making it private and compliant.\n\nDusk Network. #Blockchain #RWA",
+        "{tokenization_fact}\n\nInstitutions need this + privacy.\n\nThat's why they're looking at @DuskFoundation. #Tokenization #TradFi",
+        "Market trend: {tokenization_fact}\n\n2026 question: Which blockchain infrastructure will win?\n\nHint: Privacy + compliance wins. #DUSK #RWA",
+        "Did you see? {tokenization_fact}\n\nThe race for compliant, privacy-preserving tokenization infrastructure is ON.\n\n@DuskFoundation leading. #DeFi",
+    ],
 }
 
 # ============== THREAD TEMPLATES WITH REAL DUSK INFO ==============
@@ -216,6 +279,19 @@ THREAD_STARTERS = [
             "6/ Hyperstaking - Programmable staking\n\nLike Account Abstraction but for stakes. Custom logic, delegation, liquid staking, yield optimization. Revolutionary staking infrastructure. #DeFi",
             "7/ Citadel & Zedger - Privacy meets compliance\n\nZK KYC/AML + privacy-preserving asset issuance. MiCA-ready, GDPR-friendly, institution-approved. The complete infrastructure package. #RWA",
             "8/ What's next?\n\nCustodian bank integrations expanding. More institutions onboarding. EVM ecosystem growing.\n\nThe infrastructure for regulated DeFi is being built. Right now. @DuskFoundation 🚀"
+        ]
+    },
+    {
+        "tweets": [
+            "🧵 The RWA Explosion: Why $35B is Just the Beginning\n\nRWA tokenization hit $35.78B in Nov 2025. But here's what most people miss about where this is headed:",
+            "1/ The Numbers Don't Lie\n\nRWA market: $35.78B (Nov 2025)\nPrivate credit: ~$17B\nUS Treasuries: ~$7.3B\n\nBut projections say $16-30 TRILLION by 2030.\n\nThat's not a typo. #RWA #Tokenization",
+            "2/ BlackRock Leads the Charge\n\nBUILD fund: $2.9B in tokenized US Treasuries\nMarket share: 44%\n\nWhen the world's largest asset manager goes all-in on tokenization, you pay attention. #TradFi #Crypto",
+            "3/ From Pilots to Production\n\n2024: Banks ran pilots\n2025: Banks went LIVE\n\nJPMorgan, Franklin Templeton, UBS, KKR - all deploying capital into tokenized infrastructure.\n\nThis isn't experimentation anymore. #Blockchain",
+            "4/ Real Utility Emerging\n\nDBS Bank now accepts Franklin Templeton's tokenized MMF as loan collateral.\n\nTokenized assets = Real financial utility\nNot just speculation. Actual TradFi use cases. #DeFi",
+            "5/ The $230 Trillion Opportunity\n\nCurrently eligible collateral: $25T\nPotential collateral pool: $230T\n\nTokenization unlocks this trapped capital.\n\nImagine the liquidity. #RWA #Finance",
+            "6/ The Privacy Problem\n\nBut here's what NO ONE is talking about:\n\nInstitutions can't tokenize $100M+ deals on transparent blockchains.\n\nConfidentiality isn't optional.\nIt's REQUIRED. #Privacy",
+            "7/ Why Privacy-Preserving Chains Win\n\nTransparent chains ❌\n- Expose all deal terms\n- Violate GDPR\n- Enable front-running\n\nPrivacy + Compliance ✅\n- Confidential transactions\n- Regulatory audit trails\n- Institutional-grade security\n\n@DuskFoundation #DUSK",
+            "8/ The Inevitable Conclusion\n\n$30T RWA market by 2030 needs:\n✅ Privacy\n✅ Compliance\n✅ Institutional security\n✅ Regulatory auditability\n\nOnly privacy-preserving blockchains can deliver all four.\n\nThe race is on. 🚀 #Blockchain #RWA"
         ]
     }
 ]
@@ -269,14 +345,17 @@ def generate_tweet(category=None):
         categories = list(TWEET_TEMPLATES.keys())
         # Optimized weights for maximum engagement and reach
         weights = {
-            "engagement_bait": 0.25,    # High engagement drives reach
-            "paraphrase": 0.20,         # Authentic, shareable content
-            "hot_takes": 0.18,          # Controversial = viral potential
-            "dusk_milestones": 0.15,    # News-worthy content
-            "education_tech": 0.10,     # Educational value
-            "fomo_urgency": 0.07,       # Urgency drives action
-            "social_proof": 0.03,       # Credibility
-            "problem_solution": 0.02,   # Value-add
+            "engagement_bait": 0.20,    # High engagement drives reach
+            "rwa_news": 0.15,           # Timely RWA market news
+            "paraphrase": 0.15,         # Authentic, shareable content
+            "hot_takes": 0.15,          # Controversial = viral potential
+            "dusk_milestones": 0.12,    # News-worthy content
+            "tokenization_news": 0.10,  # Tokenization trends
+            "stablecoin_news": 0.05,    # Stablecoin market updates
+            "education_tech": 0.05,     # Educational value
+            "fomo_urgency": 0.02,       # Urgency drives action
+            "social_proof": 0.01,       # Credibility
+            "problem_solution": 0.00,   # Value-add (handled by others)
         }
         category = random.choices(categories, weights=[weights.get(c, 0.01) for c in categories])[0]
 
@@ -287,6 +366,9 @@ def generate_tweet(category=None):
         tech_detail=random.choice(DUSK_TECH_DETAILS),
         problem=random.choice(INSTITUTIONAL_PROBLEMS),
         advantage=random.choice(DUSK_ADVANTAGES),
+        rwa_fact=random.choice(RWA_MARKET_FACTS),
+        stablecoin_fact=random.choice(STABLECOIN_FACTS),
+        tokenization_fact=random.choice(TOKENIZATION_TRENDS),
         statement=random.choice([
             "Privacy isn't optional for institutional RWAs",
             "Transparent blockchains can't handle real securities",
