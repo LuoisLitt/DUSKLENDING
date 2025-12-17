@@ -35,6 +35,11 @@ TRANSFER_EVENT_SIGNATURE = "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628
 ETHERSCAN_TX = "https://etherscan.io/tx/"
 ETHERSCAN_ADDRESS = "https://etherscan.io/address/"
 
+# Known addresses
+KNOWN_ADDRESSES = {
+    "0x36B8e0B938c0172c20e14cc32E7f0e51dCf1084F": "Mainnet",
+}
+
 class DuskMonitor:
     def __init__(self):
         """Initialize the monitor with Web3 and Telegram bot"""
@@ -85,6 +90,15 @@ class DuskMonitor:
         """Format address for display (console only)"""
         return f"{address[:6]}...{address[-4:]}"
 
+    def get_address_label(self, address):
+        """Get label for known addresses"""
+        # Normalize to checksum address
+        try:
+            checksum_addr = Web3.to_checksum_address(address)
+            return KNOWN_ADDRESSES.get(checksum_addr, None)
+        except:
+            return None
+
     async def get_dusk_price(self):
         """Get current DUSK price in USD from CoinGecko"""
         try:
@@ -106,13 +120,21 @@ class DuskMonitor:
         dusk_price = await self.get_dusk_price()
         usd_value = amount * dusk_price
 
+        # Get address labels
+        from_label = self.get_address_label(from_addr)
+        to_label = self.get_address_label(to_addr)
+
+        # Format addresses with labels
+        from_display = f"<b>{from_label}</b>\n<code>{from_addr}</code>" if from_label else f"<code>{from_addr}</code>"
+        to_display = f"<b>{to_label}</b>\n<code>{to_addr}</code>" if to_label else f"<code>{to_addr}</code>"
+
         # Build message with full addresses and USD value
         message = (
             "🚨 <b>Large DUSK Transfer Detected!</b>\n\n"
             f"💰 <b>Amount:</b> {amount_formatted} DUSK\n"
             f"💵 <b>Value:</b> ${usd_value:,.2f} USD\n\n"
-            f"📤 <b>From:</b>\n<code>{from_addr}</code>\n\n"
-            f"📥 <b>To:</b>\n<code>{to_addr}</code>\n\n"
+            f"📤 <b>From:</b>\n{from_display}\n\n"
+            f"📥 <b>To:</b>\n{to_display}\n\n"
             f"🔗 <b>TX:</b> <a href='{ETHERSCAN_TX}{tx_hash}'>View on Etherscan</a>\n"
             f"⏰ <b>Time:</b> {datetime.now().strftime('%Y-%m-%d %H:%M:%S UTC')}"
         )
