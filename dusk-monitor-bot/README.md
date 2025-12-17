@@ -7,7 +7,8 @@ Real-time Telegram notifications for large DUSK token transfers (>100k DUSK).
 - 🔍 **Real-time monitoring** of DUSK token transfers on Ethereum mainnet
 - 📱 **Telegram alerts** for transfers exceeding 100,000 DUSK
 - 🔄 **Continuous operation** - runs 24/7 with auto-restart
-- 💰 **Detailed transaction info** - amount, addresses, Etherscan links
+- 💰 **Detailed transaction info** - full addresses, DUSK amount, USD value, Etherscan links
+- 💵 **Live USD pricing** - fetches current DUSK price from CoinGecko
 - ⚡ **Fast detection** - checks new blocks every 15 seconds
 
 ## Prerequisites
@@ -111,8 +112,14 @@ When a large transfer is detected, you'll receive a Telegram message like:
 🚨 Large DUSK Transfer Detected!
 
 💰 Amount: 150,000.00 DUSK
-📤 From: 0x1234...5678
-📥 To: 0xabcd...ef01
+💵 Value: $24,750.00 USD
+
+📤 From:
+0x1234567890123456789012345678901234567890
+
+📥 To:
+0xabcdefabcdefabcdefabcdefabcdefabcdefabcd
+
 🔗 TX: View on Etherscan
 ⏰ Time: 2025-12-17 14:30:45 UTC
 ```

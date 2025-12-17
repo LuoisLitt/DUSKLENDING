@@ -7,6 +7,7 @@ Monitors DUSK transfers > 100k and sends Telegram notifications
 import os
 import time
 import asyncio
+import aiohttp
 from datetime import datetime
 from web3 import Web3
 from telegram import Bot
@@ -81,18 +82,37 @@ class DuskMonitor:
         return value / (10 ** DUSK_DECIMALS)
 
     def format_address(self, address):
-        """Format address for display"""
+        """Format address for display (console only)"""
         return f"{address[:6]}...{address[-4:]}"
+
+    async def get_dusk_price(self):
+        """Get current DUSK price in USD from CoinGecko"""
+        try:
+            async with aiohttp.ClientSession() as session:
+                url = "https://api.coingecko.com/api/v3/simple/price?ids=dusk-network&vs_currencies=usd"
+                async with session.get(url, timeout=10) as response:
+                    if response.status == 200:
+                        data = await response.json()
+                        return data.get('dusk-network', {}).get('usd', 0)
+        except Exception as e:
+            print(f"⚠️  Could not fetch DUSK price: {e}")
+        return 0
 
     async def send_alert(self, tx_hash, from_addr, to_addr, amount):
         """Send Telegram alert for large transfer"""
         amount_formatted = f"{amount:,.2f}"
 
+        # Get current DUSK price in USD
+        dusk_price = await self.get_dusk_price()
+        usd_value = amount * dusk_price
+
+        # Build message with full addresses and USD value
         message = (
             "🚨 <b>Large DUSK Transfer Detected!</b>\n\n"
             f"💰 <b>Amount:</b> {amount_formatted} DUSK\n"
-            f"📤 <b>From:</b> <code>{from_addr}</code>\n"
-            f"📥 <b>To:</b> <code>{to_addr}</code>\n"
+            f"💵 <b>Value:</b> ${usd_value:,.2f} USD\n\n"
+            f"📤 <b>From:</b>\n<code>{from_addr}</code>\n\n"
+            f"📥 <b>To:</b>\n<code>{to_addr}</code>\n\n"
             f"🔗 <b>TX:</b> <a href='{ETHERSCAN_TX}{tx_hash}'>View on Etherscan</a>\n"
             f"⏰ <b>Time:</b> {datetime.now().strftime('%Y-%m-%d %H:%M:%S UTC')}"
         )
@@ -104,7 +124,7 @@ class DuskMonitor:
                 parse_mode='HTML',
                 disable_web_page_preview=True
             )
-            print(f"✅ Alert sent: {amount_formatted} DUSK")
+            print(f"✅ Alert sent: {amount_formatted} DUSK (${usd_value:,.2f} USD)")
         except TelegramError as e:
             print(f"❌ Failed to send Telegram message: {e}")
 
