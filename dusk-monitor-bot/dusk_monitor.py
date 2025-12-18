@@ -168,20 +168,50 @@ class DuskMonitor:
 
             await self.send_alert(tx_hash, from_addr, to_addr, amount)
 
+    def load_last_block(self):
+        """Load the last processed block from file"""
+        try:
+            if os.path.exists('last_block.txt'):
+                with open('last_block.txt', 'r') as f:
+                    return int(f.read().strip())
+        except Exception as e:
+            print(f"⚠️  Could not load last block: {e}")
+        return None
+
+    def save_last_block(self, block_number):
+        """Save the last processed block to file"""
+        try:
+            with open('last_block.txt', 'w') as f:
+                f.write(str(block_number))
+        except Exception as e:
+            print(f"⚠️  Could not save last block: {e}")
+
     async def monitor_loop(self):
         """Main monitoring loop"""
         print("🔍 Starting monitor loop...\n")
 
         # Get the latest block
-        latest_block = self.w3.eth.block_number
-        last_processed_block = latest_block
+        current_block = self.w3.eth.block_number
+
+        # Try to resume from last saved block
+        last_saved_block = self.load_last_block()
+
+        if last_saved_block and last_saved_block > current_block - 500:
+            # Resume from saved block, but don't go back more than 500 blocks
+            last_processed_block = last_saved_block
+            blocks_behind = current_block - last_processed_block
+            print(f"📚 Resuming from block {last_processed_block} ({blocks_behind} blocks behind)")
+        else:
+            # Start from current block
+            last_processed_block = current_block - 10  # Only check last 10 blocks
+            print(f"🆕 Starting from block {last_processed_block} (checking last 10 blocks)")
 
         # Send startup message
         try:
             await self.bot.send_message(
                 chat_id=self.chat_id,
                 text=f"✅ DUSK Monitor Started!\n\nMonitoring transfers > {THRESHOLD:,} DUSK\n"
-                     f"Starting from block: {latest_block}",
+                     f"Resuming from block: {last_processed_block}\nCurrent block: {current_block}",
                 parse_mode='HTML'
             )
         except TelegramError as e:
@@ -193,9 +223,10 @@ class DuskMonitor:
 
                 # Process new blocks
                 if current_block > last_processed_block:
-                    # Query transfer events
+                    # Process blocks in batches to avoid Alchemy limits
+                    BATCH_SIZE = 50  # Smaller batches for Alchemy free tier
                     from_block = last_processed_block + 1
-                    to_block = current_block
+                    to_block = min(from_block + BATCH_SIZE - 1, current_block)
 
                     print(f"📦 Checking blocks {from_block} to {to_block}...")
 
@@ -210,13 +241,24 @@ class DuskMonitor:
                         for event in events:
                             await self.process_transfer(event)
 
-                    last_processed_block = current_block
+                    last_processed_block = to_block
+
+                    # Save progress after processing blocks
+                    self.save_last_block(last_processed_block)
+
+                    # If we're still catching up, continue immediately
+                    if to_block < current_block:
+                        await asyncio.sleep(0.5)  # Small delay to avoid rate limits
+                        continue
 
                 # Wait before next check (15 seconds = average block time)
                 await asyncio.sleep(15)
 
+            except KeyboardInterrupt:
+                raise
             except Exception as e:
                 print(f"❌ Error in monitor loop: {e}")
+                print(f"   Error type: {type(e).__name__}")
                 print("   Retrying in 30 seconds...")
                 await asyncio.sleep(30)
 
