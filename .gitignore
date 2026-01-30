@@ -51,3 +51,7 @@ temp/
 
 # Ethers
 dist/
+
+# Research aggregator
+tools/.cache/
+tools/briefings/
